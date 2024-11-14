@@ -1,0 +1,781 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "luzhac-data-factory"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureDatabricksDeltaLake1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksDeltaLake1'"
+		},
+		"AzureSqlDatabase1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
+		},
+		"AzureBlobStorage1_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://luzhacjob.blob.core.windows.net/"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://luzhacjob.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "luzhac.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "luzhac"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "luzhac"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlobStorage1",
+									"type": "LinkedServiceReference"
+								},
+								"path": ""
+							},
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlobStorage1",
+										"type": "LinkedServiceReference"
+									}
+								}
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "ID",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Year_Birth",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Year_Birth",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Education",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Education",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Marital_Status",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Marital_Status",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Income",
+											"type": "Double",
+											"physicalType": "float"
+										},
+										"sink": {
+											"name": "Income",
+											"type": "Double",
+											"physicalType": "DOUBLE"
+										}
+									},
+									{
+										"source": {
+											"name": "Kidhome",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Kidhome",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Teenhome",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Teenhome",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Dt_Customer",
+											"type": "DateTime",
+											"physicalType": "date"
+										},
+										"sink": {
+											"name": "Dt_Customer",
+											"type": "DateTime",
+											"physicalType": "INT_96"
+										}
+									},
+									{
+										"source": {
+											"name": "Recency",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Recency",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "MntWines",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "MntWines",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "MntFruits",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "MntFruits",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "MntMeatProducts",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "MntMeatProducts",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "MntFishProducts",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "MntFishProducts",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "MntSweetProducts",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "MntSweetProducts",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "MntGoldProds",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "MntGoldProds",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "NumDealsPurchases",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "NumDealsPurchases",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "NumWebPurchases",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "NumWebPurchases",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "NumCatalogPurchases",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "NumCatalogPurchases",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "NumStorePurchases",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "NumStorePurchases",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "NumWebVisitsMonth",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "NumWebVisitsMonth",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "AcceptedCmp3",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "AcceptedCmp3",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "AcceptedCmp4",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "AcceptedCmp4",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "AcceptedCmp5",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "AcceptedCmp5",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "AcceptedCmp1",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "AcceptedCmp1",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "AcceptedCmp2",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "AcceptedCmp2",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Complain",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Complain",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Z_CostContact",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Z_CostContact",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Z_Revenue",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Z_Revenue",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									},
+									{
+										"source": {
+											"name": "Response",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Response",
+											"type": "Int32",
+											"physicalType": "INT_32"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-11-06T20:16:27Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/datasets/Parquet1')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricksDeltaLakeDataset1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricksDeltaLake1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDatabricksDeltaLakeDataset",
+				"typeProperties": {},
+				"schema": [
+					{
+						"name": "ID",
+						"type": "integer"
+					},
+					{
+						"name": "Name",
+						"type": "string"
+					},
+					{
+						"name": "Age",
+						"type": "integer"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricksDeltaLake1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Year_Birth",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Education",
+						"type": "varchar"
+					},
+					{
+						"name": "Marital_Status",
+						"type": "varchar"
+					},
+					{
+						"name": "Income",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "Kidhome",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Teenhome",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Dt_Customer",
+						"type": "date"
+					},
+					{
+						"name": "Recency",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MntWines",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MntFruits",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MntMeatProducts",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MntFishProducts",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MntSweetProducts",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MntGoldProds",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "NumDealsPurchases",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "NumWebPurchases",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "NumCatalogPurchases",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "NumStorePurchases",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "NumWebVisitsMonth",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AcceptedCmp3",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AcceptedCmp4",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AcceptedCmp5",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AcceptedCmp1",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AcceptedCmp2",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Complain",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Z_CostContact",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Z_Revenue",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Response",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "MarketingData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "dbo.MarketingData.parquet",
+						"folderPath": "marketing",
+						"fileSystem": "data"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"serviceEndpoint": "[parameters('AzureBlobStorage1_properties_typeProperties_serviceEndpoint')]",
+					"accountKind": "StorageV2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricksDeltaLake1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricksDeltaLake",
+				"typeProperties": {
+					"domain": "https://adb-4122168068072131.11.azuredatabricks.net",
+					"clusterId": "1101-170438-tr6dzkaf",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricksDeltaLake1_accessToken')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]",
+					"database": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AzureSqlDatabase1_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
