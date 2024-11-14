@@ -1,0 +1,160 @@
+{
+	"name": "AzureSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Year_Birth",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Education",
+				"type": "varchar"
+			},
+			{
+				"name": "Marital_Status",
+				"type": "varchar"
+			},
+			{
+				"name": "Income",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Kidhome",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Teenhome",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Dt_Customer",
+				"type": "date"
+			},
+			{
+				"name": "Recency",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MntWines",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MntFruits",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MntMeatProducts",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MntFishProducts",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MntSweetProducts",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MntGoldProds",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NumDealsPurchases",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NumWebPurchases",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NumCatalogPurchases",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NumStorePurchases",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NumWebVisitsMonth",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AcceptedCmp3",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AcceptedCmp4",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AcceptedCmp5",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AcceptedCmp1",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AcceptedCmp2",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Complain",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Z_CostContact",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Z_Revenue",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Response",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "MarketingData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

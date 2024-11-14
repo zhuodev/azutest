@@ -1,0 +1,15 @@
+{
+	"name": "luzhac-data-factory",
+	"properties": {
+		"globalConfigurations": {
+			"factoryStagingLSReferenceName": "AzureBlobStorage1",
+			"factoryStagingLSType": "LinkedServiceReference"
+		}
+	},
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7d964aaa-f099-44cd-b7a9-3c48ed41808d",
+		"tenantId": "728b986e-669b-41f0-98ac-f2dc8fe4cf40"
+	}
+}
